@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High School GPA Calculator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body { 
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            height: 90vh;
+        }
+
+        button {
+            height: 40px;
+            width: 150px;
+            border-style: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #content {
+            height: 400px;
+            overflow-y: scroll;
+        }
+
+        div {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #blocks, #honorsmult, #apmult {
+            width: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span>Total number of blocks (do not count study hall): </span><input type="text" id="blocks">
+    </div>
+    <div>
+        <span>Honors class multiplier: </span><input type="text" id="honorsmult">
+    </div>
+    <div>
+        <span>AP class multiplier: </span><input type="text" id="apmult">
+    </div>
+    <div id="buttons">
+        <button id="newClass">New Class</button>
+        <button id="removeClass">Remove Class</button>
+        <button id="calcgpa">Calculate GPA</button>
+    </div>
+    <div id="content"></div>
+    <div><span>Weighted Gpa: </span><span id="weightedGpa"></span></div>
+    <div><span>Unweighted Gpa: </span><span id="unweightedGpa"></span></div>
+
+<script>
+const newClassBtn = document.getElementById("newClass")
+const removeClassBtn = document.getElementById("removeClass")
+const calcgpa = document.getElementById('calcgpa')
+const content = document.getElementById("content")
+
+newClassBtn.addEventListener('click', newClassFunct)
+removeClassBtn.addEventListener('click', removeClassFunct)
+calcgpa.addEventListener('click', calcgpaFunct)
+
+function newClassFunct() {
+    let newClass = document.createElement('div')
+    let options = `
+    <input>
+    <select class="classtype">
+        <option>CP</option>
+        <option>Honors</option>
+        <option>AP</option>    
+    </select>
+    <select class="grades">
+        <option>A+</option>
+        <option>A</option>
+        <option>A-</option>
+        <option>B+</option>    
+        <option>B</option>    
+        <option>B-</option>    
+        <option>C+</option>    
+        <option>C</option>    
+        <option>C-</option>    
+        <option>D+</option>    
+        <option>D</option>    
+        <option>D-</option>    
+        <option>F</option>    
+    </select>
+    <select class="credits">
+        <option value='1'>5 credits</option>
+        <option value='.75'>3.75 credits</option>
+        <option value='.5'>2.5 credits</option>
+        <option value='.25'>1.25 credits</option>
+    </select>
+    `
+    newClass.innerHTML = options
+    content.appendChild(newClass)    
+}
+
+function removeClassFunct() {
+    let lastClass = document.querySelector('#content > div:last-child')
+    lastClass.remove()
+}
+
+function calcgpaFunct() {
+    let classtype = document.getElementsByClassName('classtype')
+    let grade = document.getElementsByClassName('grades')
+    let credit = document.getElementsByClassName('credits')
+    let blocks= document.getElementById('blocks').value
+    let x = 0
+    let unweightedgpas = []
+    let weightedgpas = []
+    let total = 0
+    let tot = 0
+    let honorsmult = document.getElementById('honorsmult').value
+    let apmult = document.getElementById('apmult').value
+    for (let i = 0; i<classtype.length; i++) { 
+        weightedgpas.length = i
+        unweightedgpas.length = i
+        let n
+        if (grade[i].value == 'A+') {
+            n = 4  
+        } else if (grade[i].value == 'A') {
+            n = 4
+        } else if (grade[i].value == 'A-') {
+            n = 3.667
+        } else if (grade[i].value == 'B+') {
+            n = 3.333
+        } else if (grade[i].value == 'B') {
+            n = 3
+        } else if (grade[i].value == 'B-') {
+            n = 2.667
+        } else if (grade[i].value == 'C+') {
+            n = 2.333
+        } else if (grade[i].value == 'C') {
+            n = 2
+        } else if (grade[i].value == 'C-') {
+            n = 1.667
+        } else if (grade[i].value == 'D+') {
+            n = 1.333
+        } else if (grade[i].value == 'D') {
+            n = 1
+        } else if (grade[i].value == 'D-') {
+            n = 0.667
+        } else if (grade[i].value == 'F') {
+            n = 0
+        }
+        unweightedgpas[i] = n*credit[i].value
+        if (classtype[i].value == 'CP') {
+            let num
+            if (grade[i].value == 'A+') {
+                num = 4  
+            } else if (grade[i].value == 'A') {
+                num = 4
+            } else if (grade[i].value == 'A-') {
+                num = 3.667
+            } else if (grade[i].value == 'B+') {
+                num = 3.333
+            } else if (grade[i].value == 'B') {
+                num = 3
+            } else if (grade[i].value == 'B-') {
+                num = 2.667
+            } else if (grade[i].value == 'C+') {
+                num = 2.333
+            } else if (grade[i].value == 'C') {
+                num = 2
+            } else if (grade[i].value == 'C-') {
+                num = 1.667
+            } else if (grade[i].value == 'D+') {
+                num = 1.333
+            } else if (grade[i].value == 'D') {
+                num = 1
+            } else if (grade[i].value == 'D-') {
+                num = 0.667
+            } else if (grade[i].value == 'F') {
+                num = 0
+            }
+            weightedgpas[i] = num*credit[i].value
+        } else if (classtype[i].value == 'Honors') {
+            let num
+            if (grade[i].value == 'A+') {
+                num = 4
+            } else if (grade[i].value == 'A') {
+                num = 4
+            } else if (grade[i].value == 'A-') {
+                num = 3.667
+            } else if (grade[i].value == 'B+') {
+                num = 3.333
+            } else if (grade[i].value == 'B') {
+                num = 3
+            } else if (grade[i].value == 'B-') {
+                num = 2.667
+            } else if (grade[i].value == 'C+') {
+                num = 2.333
+            } else if (grade[i].value == 'C') {
+                num = 2
+            } else if (grade[i].value == 'C-') {
+                num = 1.667
+            } else if (grade[i].value == 'D+') {
+                num = 1.333
+            } else if (grade[i].value == 'D') {
+                num = 1
+            } else if (grade[i].value == 'D-') {
+                num = 0.667
+            } else if (grade[i].value == 'F') {
+                num = 0
+            }
+            weightedgpas[i] = num*honorsmult*credit[i].value
+        } else if (classtype[i].value == 'AP') {
+            let num
+            if (grade[i].value == 'A+') {
+                num = 4
+            } else if (grade[i].value == 'A') {
+                num = 4
+            } else if (grade[i].value == 'A-') {
+                num = 3.667
+            } else if (grade[i].value == 'B+') {
+                num = 3.333
+            } else if (grade[i].value == 'B') {
+                num = 3
+            } else if (grade[i].value == 'B-') {
+                num = 2.667
+            } else if (grade[i].value == 'C+') {
+                num = 2.333
+            } else if (grade[i].value == 'C') {
+                num = 2
+            } else if (grade[i].value == 'C-') {
+                num = 1.667
+            } else if (grade[i].value == 'D+') {
+                num = 1.333
+            } else if (grade[i].value == 'D') {
+                num = 1
+            } else if (grade[i].value == 'D-') {
+                num = 0.667
+            } else if (grade[i].value == 'F') {
+                num = 0
+            }
+            weightedgpas[i] = num*apmult*credit[i].value
+        }
+    }
+
+    for (let j = 0; j<weightedgpas.length; j++) {
+        total += weightedgpas[j]                                                                                                                                  
+    }
+
+    let weightedGpa = total/blocks
+    document.getElementById('weightedGpa').innerText = weightedGpa.toFixed(2)
+
+    for (let k = 0; k<unweightedgpas.length; k++) {
+        tot += unweightedgpas[k]
+    }
+
+    let unweightedGpa = tot/blocks
+    document.getElementById('unweightedGpa').innerText = unweightedGpa.toFixed(2)
+}
+
+</script>
+</body>
+</html>

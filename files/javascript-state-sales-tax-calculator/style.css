@@ -1,0 +1,46 @@
+body {
+    background: #262626;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+h1 a {
+    text-decoration: none;
+    color: white;
+}
+
+h1 a:hover {
+    color: #60a5fa;
+}
+
+input, select, button{
+    background-color: #404040;
+    border: none;
+    color: white;
+    font-size: 14pt;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+select {
+    margin-inline: 10px;
+}
+
+button:hover {
+    background-color: #525252;
+}
+
+button:active {
+    background-color: #737373;
+}
+
+p {
+    font-size: 16pt;
+}
+
+@media screen and (max-width: 524px) {
+    input, select {
+        margin-bottom: 16px;
+    }
+}
