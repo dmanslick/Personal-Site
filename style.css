@@ -6,8 +6,12 @@ html {
     scroll-behavior: smooth;
 }
 
-#home, #about {
+#home {
     height: calc(100vh - 80px)
+}
+
+#about {
+    min-height: calc(100vh - 80px);
 }
 
 #home > div {
