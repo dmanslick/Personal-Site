@@ -2,7 +2,6 @@ class Project extends HTMLElement {
     constructor() {
         super();
         const tags = this.getAttribute('data-tags').split(', ')
-        console.log(tags)
         this.innerHTML = `
         <div>
             <h2 class="text-center my-5 text-3xl lg:text-xl xl:text-2xl 2xl:text-3xl">${this.getAttribute('data-website')}</h2>
